@@ -1,9 +1,11 @@
+import os
+
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, String, Integer, Float, Boolean, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
-
+db_string = f'postgres://{os.environ["PSQL_USER"]}:{os.environ["PSQL_PW"]}@127.0.0.1:5432/nba_warehouse'
 
 db = create_engine(db_string, pool_recycle=600)
 base = declarative_base()
