@@ -1,3 +1,4 @@
+import argparse
 from datetime import datetime
 import json
 import time
@@ -6,17 +7,26 @@ import requests
 
 from nba_warehouse.db.models import session, Game, Team, ActualGameSpread
 
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    'season', help='Year (YYYY) of start of season (i.e. 2015-16 = 2015)')
+args = parser.parse_args()
+
+season = args.season
+
 # Build a list of distinct game dates
 epoch_game_dates = []
 for value in session.query(Game.game_date_est).filter(
-        Game.season == '2016').distinct():
-    # Add time to game_date date object then use timestamp to get epoch value
-    game_date_timestamp = datetime.combine(
-        value[0], datetime.min.time()).timestamp()
+        Game.season == season).distinct():
+    # Do not look for line on future games if running during active season
+    if value[0] <= datetime.now().date():
+        # Add time to game_date date object then use timestamp to get epoch value
+        game_date_timestamp = datetime.combine(
+            value[0], datetime.min.time()).timestamp()
 
-    # Have the epoch time include milliseconds
-    epoch_datetime = round(game_date_timestamp * 1000)
-    epoch_game_dates.append(epoch_datetime)
+        # Have the epoch time include milliseconds
+        epoch_datetime = round(game_date_timestamp * 1000)
+        epoch_game_dates.append(epoch_datetime)
 
 # Loop over epoch game dates
 for epoch_game_date in epoch_game_dates:
