@@ -3,8 +3,6 @@ version: '3'
 services:
   warehouse:
     build: .
-    links:
-      - db
   db:
     image: postgres:latest
     restart: always

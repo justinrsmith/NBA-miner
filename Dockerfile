@@ -1,6 +1,9 @@
 FROM python:3
 
-WORKDIR /home/justin/nba_warehouse
+WORKDIR /nba_warehouse
+
+COPY . /nba_warehouse
 
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
+RUN pip install .
