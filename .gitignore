@@ -4,3 +4,4 @@ venv/
 nba_warehouseaws20181224.sql
 .vscode/
 nba_model/
+.env
