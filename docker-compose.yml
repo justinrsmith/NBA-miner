@@ -3,11 +3,17 @@ version: '3'
 services:
   warehouse:
     build: .
+    depends_on:
+      - db
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
   db:
     image: postgres:latest
     restart: always
     ports:
       - 5432:5432
     environment:
-      POSTGRES_DB: 'nba_warehouse'
-      POSTGRES_PASSWORD: 'postgrespw'
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
