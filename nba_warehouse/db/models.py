@@ -5,7 +5,7 @@ from sqlalchemy import Column, String, Integer, Float, Boolean, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
-db_string = f'postgres://{os.environ["DB_USER"]}:{os.environ["DB_PASSWORD"]}@db:5432/nba_warehouse'
+db_string = f'postgres://{os.environ["DB_USER"]}:{os.environ["DB_PASSWORD"]}@db:{os.environ["DB_PORT"]}/{os.environ["DB_NAME"]}'
 
 db = create_engine(db_string, pool_recycle=600)
 base = declarative_base()
