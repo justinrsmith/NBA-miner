@@ -53,7 +53,7 @@ class TestGetGames(object):
                             "2018",
                             4,
                             "     ",
-                            '',
+                            "",
                             "NBCSB",
                             "FSO",
                             "Q4       - ",
@@ -72,7 +72,7 @@ class TestGetGames(object):
                             "2018",
                             4,
                             "     ",
-                            '',
+                            "",
                             "FSSE-CHA",
                             "ATTSN-RM",
                             "Q4       - ",
@@ -431,6 +431,10 @@ class TestGetGames(object):
             ],
         }
 
+    @classmethod
+    def teardown_class(self):
+        self.mock_get_patcher.stop()
+
     def test_request_response_is_ok(self):
         self.mock_get.return_value = Mock(ok=True)
         self.mock_get.return_value.json.return_value = self.games
@@ -506,7 +510,7 @@ class TestFormatGames(object):
                             "2018",
                             4,
                             "     ",
-                            '',
+                            "",
                             "NBCSB",
                             "FSO",
                             "Q4       - ",
@@ -525,7 +529,7 @@ class TestFormatGames(object):
                             "2018",
                             4,
                             "     ",
-                            '',
+                            "",
                             "FSSE-CHA",
                             "ATTSN-RM",
                             "Q4       - ",
@@ -910,7 +914,10 @@ class TestFormatGames(object):
     def test_same_number_games_formatted_as_from_api(self):
         self.mock_get_games.return_value = Mock()
         self.mock_get_games.return_value.json.return_value = self.games
-        response = get_games(self.date)
+        with patch("nba_warehouse.games.requests.get") as mock_get:
+            mock_get.return_value.ok = True
+            mock_get.return_value.json.return_value = self.games
+            response = get_games(self.date)
         formatted_games = format_games(self.date)
 
         assert self.mock_get_games.called == True
