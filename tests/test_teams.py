@@ -1,8 +1,8 @@
 from unittest import skipIf
 from unittest.mock import Mock, patch
 
-from nba_warehouse.teams import get_teams, get_nba_teams
 from constants import SKIP_REAL
+from nba_warehouse.teams import get_teams, get_nba_teams
 
 
 class TestAllTeams(object):
