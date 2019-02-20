@@ -118,10 +118,10 @@ class TestAllTeams(object):
         assert response is None
 
     @skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
-    def test_integeration_contract(teams):
+    def test_integeration_contract(self, teams):
         # Call the service to hit actual API
-        teams = get_teams()
-        actual_keys = teams.json().keys()
+        response = get_teams()
+        actual_keys = response.json().keys()
 
         # Call the esrvice to hit the mocked API
         with patch("nba_warehouse.teams.requests.get") as mock_get:

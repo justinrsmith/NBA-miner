@@ -466,10 +466,10 @@ class TestGetGames(object):
         )
 
     @skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
-    def test_integeration_contract(games):
+    def test_integeration_contract(self, games):
         # Call the service to hit actual API
-        games = get_games(datetime(2018, 11, 30))
-        actual_keys = games.json().keys()
+        response = get_games(datetime(2018, 11, 30))
+        actual_keys = response.json().keys()
 
         # Call the esrvice to hit the mocked API
         with patch("nba_warehouse.games.requests.get") as mock_get:
