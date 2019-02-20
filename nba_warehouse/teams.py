@@ -1,19 +1,14 @@
-import requests
+from nba_warehouse.api import NBAApi
 
 BASE_URL = "https://data.nba.net/prod/v2/2018/teams.json"
 
 
 def get_teams():
-    response = requests.get(BASE_URL)
-    if response.ok:
-        return response
-    else:
-        return None
+    nba_api = NBAApi(BASE_URL)
+    return nba_api.get()
 
 
-def get_nba_teams():
-    teams = get_teams().json()
-
+def get_nba_teams(teams):
     nba_teams = []
     for team in teams["league"]["standard"]:
         if team["isNBAFranchise"] == "true":

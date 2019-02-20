@@ -94,7 +94,7 @@ def teams():
 class TestAllTeams(object):
     @classmethod
     def setup_class(self):
-        self.mock_get_patcher = patch("nba_warehouse.teams.requests.get")
+        self.mock_get_patcher = patch("nba_warehouse.api.requests.get")
         self.mock_get = self.mock_get_patcher.start()
 
     @classmethod
@@ -129,12 +129,8 @@ class TestNBATeams(object):
         self.mock_get_teams_patcher.stop()
 
     def test_getting_only_nba_teams(self, teams):
-        self.mock_get_teams.return_value = Mock()
-        self.mock_get_teams.return_value.json.return_value = teams
+        nba_teams = get_nba_teams(teams)
 
-        nba_teams = get_nba_teams()
-
-        assert self.mock_get_teams.called == True
         assert nba_teams == [
             teams["league"]["standard"][1],
             teams["league"]["standard"][2],

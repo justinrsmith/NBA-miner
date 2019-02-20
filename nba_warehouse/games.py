@@ -1,7 +1,6 @@
 from datetime import datetime
 
-import requests
-
+from nba_warehouse.api import NBAApi
 from nba_warehouse.utils import HEADERS
 
 BASE_URL = "https://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00"
@@ -9,13 +8,8 @@ BASE_URL = "https://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00"
 
 def get_games(date):
     url = BASE_URL + f'&gameDate={date.strftime("%m/%d/%Y")}'
-
-    response = requests.get(url, headers=HEADERS)
-
-    if response.ok:
-        return response
-    else:
-        return None
+    nba_api = NBAApi(url)
+    return nba_api.get()
 
 
 def format_games(date):

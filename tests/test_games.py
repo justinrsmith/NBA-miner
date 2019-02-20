@@ -431,7 +431,7 @@ def games():
 class TestGetGames(object):
     @classmethod
     def setup_class(self):
-        self.mock_get_patcher = patch("nba_warehouse.games.requests.get")
+        self.mock_get_patcher = patch("nba_warehouse.api.requests.get")
         self.mock_get = self.mock_get_patcher.start()
         self.date = datetime(2018, 11, 30)
 
@@ -499,7 +499,7 @@ class TestFormatGames(object):
     def test_same_number_games_formatted_as_from_api(self, games):
         self.mock_get_games.return_value = Mock()
         self.mock_get_games.return_value.json.return_value = games
-        with patch("nba_warehouse.games.requests.get") as mock_get:
+        with patch("nba_warehouse.api.requests.get") as mock_get:
             mock_get.return_value.ok = True
             mock_get.return_value.json.return_value = games
             response = get_games(self.date)

@@ -1,3 +1,3 @@
 from setuptools import setup
 
-setup(name='nba_warehouse')
+setup(name="nba_warehouse")
