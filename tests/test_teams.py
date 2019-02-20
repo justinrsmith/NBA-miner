@@ -117,22 +117,6 @@ class TestAllTeams(object):
 
         assert response is None
 
-    @skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
-    def test_integeration_contract(self, teams):
-        # Call the service to hit actual API
-        response = get_teams()
-        actual_keys = response.json().keys()
-
-        # Call the esrvice to hit the mocked API
-        with patch("nba_warehouse.teams.requests.get") as mock_get:
-            mock_get.return_value.ok = True
-            mock_get.return_value.json.return_value = teams
-
-            mocked = get_teams()
-            mocked_keys = mocked.json().keys()
-
-        assert list(actual_keys) == list(mocked_keys)
-
 
 class TestNBATeams(object):
     @classmethod
@@ -155,3 +139,20 @@ class TestNBATeams(object):
             teams["league"]["standard"][1],
             teams["league"]["standard"][2],
         ]
+
+
+@skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
+def test_integeration_contract(teams):
+    # Call the service to hit actual API
+    response = get_teams()
+    actual_keys = response.json().keys()
+
+    # Call the esrvice to hit the mocked API
+    with patch("nba_warehouse.teams.requests.get") as mock_get:
+        mock_get.return_value.ok = True
+        mock_get.return_value.json.return_value = teams
+
+        mocked = get_teams()
+        mocked_keys = mocked.json().keys()
+
+    assert list(actual_keys) == list(mocked_keys)

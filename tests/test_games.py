@@ -465,22 +465,6 @@ class TestGetGames(object):
             "%m/%d/%Y"
         )
 
-    @skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
-    def test_integeration_contract(self, games):
-        # Call the service to hit actual API
-        response = get_games(datetime(2018, 11, 30))
-        actual_keys = response.json().keys()
-
-        # Call the esrvice to hit the mocked API
-        with patch("nba_warehouse.games.requests.get") as mock_get:
-            mock_get.return_value.ok = True
-            mock_get.return_value.json.return_value = games
-
-            mocked = get_games(datetime(2018, 11, 30))
-            mocked_keys = mocked.json().keys()
-
-        assert list(actual_keys) == list(mocked_keys)
-
 
 class TestFormatGames(object):
     @classmethod
@@ -523,3 +507,20 @@ class TestFormatGames(object):
 
         assert self.mock_get_games.called == True
         assert len(response.json()["resultSets"][0]["rowSet"]) == len(formatted_games)
+
+
+@skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
+def test_integeration_contract(games):
+    # Call the service to hit actual API
+    response = get_games(datetime(2018, 11, 30))
+    actual_keys = response.json().keys()
+
+    # Call the esrvice to hit the mocked API
+    with patch("nba_warehouse.games.requests.get") as mock_get:
+        mock_get.return_value.ok = True
+        mock_get.return_value.json.return_value = games
+
+        mocked = get_games(datetime(2018, 11, 30))
+        mocked_keys = mocked.json().keys()
+
+    assert list(actual_keys) == list(mocked_keys)
