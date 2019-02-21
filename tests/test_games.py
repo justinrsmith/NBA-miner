@@ -5,12 +5,12 @@ from unittest.mock import Mock, patch
 import pytest
 
 from constants import SKIP_REAL
-from nba_warehouse.games import get_games, format_games
+from nba_warehouse.games import Games
 from nba_warehouse.teams import get_teams
 
 
 @pytest.fixture
-def games():
+def mock_games():
     return {
         "resource": "scoreboardV2",
         "parameters": {"GameDate": "11/30/2018", "LeagueID": "00", "DayOffset": "0"},
@@ -439,29 +439,28 @@ class TestGetGames(object):
     def teardown_class(self):
         self.mock_get_patcher.stop()
 
-    def test_request_response_is_ok(self, games):
+    def test_request_response_is_ok(self, mock_games):
         self.mock_get.return_value = Mock(ok=True)
-        self.mock_get.return_value.json.return_value = games
+        self.mock_get.return_value.json.return_value = mock_games
 
-        response = get_games(self.date)
+        games = Games(self.date)
 
-        assert response.ok is True
-        assert response.json() == games
+        assert games.get().ok is True
+        assert games.get().json() == mock_games
 
     def test_request_response_is_not_ok(self):
         self.mock_get.return_value = Mock(ok=False)
 
-        response = get_games(self.date)
+        games = Games(self.date)
+        assert games.get() is None
 
-        assert response is None
-
-    def test_games_are_for_provided_date(self, games):
+    def test_games_are_for_provided_date(self, mock_games):
         self.mock_get.return_value = Mock(ok=True)
-        self.mock_get.return_value.json.return_value = games
+        self.mock_get.return_value.json.return_value = mock_games
 
-        response = get_games(self.date)
+        games = Games(self.date)
 
-        assert response.json()["parameters"]["GameDate"] == self.date.strftime(
+        assert games.get().json()["parameters"]["GameDate"] == self.date.strftime(
             "%m/%d/%Y"
         )
 
@@ -469,7 +468,7 @@ class TestGetGames(object):
 class TestFormatGames(object):
     @classmethod
     def setup_class(self):
-        self.mock_get_games_patcher = patch("nba_warehouse.games.get_games")
+        self.mock_get_games_patcher = patch("nba_warehouse.games.Games.get")
         self.mock_get_games = self.mock_get_games_patcher.start()
         self.date = datetime(2018, 11, 30)
 
@@ -477,10 +476,11 @@ class TestFormatGames(object):
     def teardown_class(self):
         self.mock_get_games_patcher.stop()
 
-    def test_games_formatted_as_expected(self, games):
+    def test_games_formatted_as_expected(self, mock_games):
         self.mock_get_games.return_value = Mock()
-        self.mock_get_games.return_value.json.return_value = games
-        formatted_games = format_games(self.date)
+        self.mock_get_games.return_value.json.return_value = mock_games
+        games = Games(self.date)
+        formatted_games = games.formatted()
 
         expected_keys = [
             "game_id",
@@ -496,31 +496,27 @@ class TestFormatGames(object):
         assert type(formatted_games) == list
         assert list(formatted_games[0].keys()) == expected_keys
 
-    def test_same_number_games_formatted_as_from_api(self, games):
+    def test_same_number_games_formatted_as_from_api(self, mock_games):
         self.mock_get_games.return_value = Mock()
-        self.mock_get_games.return_value.json.return_value = games
-        with patch("nba_warehouse.api.requests.get") as mock_get:
-            mock_get.return_value.ok = True
-            mock_get.return_value.json.return_value = games
-            response = get_games(self.date)
-        formatted_games = format_games(self.date)
+        self.mock_get_games.return_value.json.return_value = mock_games
+        formatted_games = self.mock_get_games.formatted()
 
         assert self.mock_get_games.called == True
-        assert len(response.json()["resultSets"][0]["rowSet"]) == len(formatted_games)
+        assert len(self.mock_get_games.data.json()["resultSets"][0]["rowSet"]) == len(formatted_games)
 
 
 @skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
-def test_integeration_contract(games):
+def test_integeration_contract(mock_games):
     # Call the service to hit actual API
-    response = get_games(datetime(2018, 11, 30))
-    actual_keys = response.json().keys()
+    games = Games(datetime(2018, 11, 30))
+    actual_keys = games.get().json().keys()
 
-    # Call the esrvice to hit the mocked API
-    with patch("nba_warehouse.games.requests.get") as mock_get:
+    # Call the service to hit the mocked API
+    with patch("nba_warehouse.api.requests.get") as mock_get:
         mock_get.return_value.ok = True
-        mock_get.return_value.json.return_value = games
+        mock_get.return_value.json.return_value = mock_games
 
-        mocked = get_games(datetime(2018, 11, 30))
-        mocked_keys = mocked.json().keys()
+        mocked = Games(datetime(2018, 11, 30))
+        mocked_keys = mocked.get().json().keys()
 
     assert list(actual_keys) == list(mocked_keys)
