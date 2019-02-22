@@ -4,11 +4,11 @@ from unittest.mock import Mock, patch
 import pytest
 
 from constants import SKIP_REAL
-from nba_warehouse.teams import get_teams, get_nba_teams
+from nba_warehouse.teams import Teams
 
 
 @pytest.fixture
-def teams():
+def mock_teams():
     return {
         "_internal": {
             "pubDateTime": "2018-08-30 20:00:04.422",
@@ -101,54 +101,57 @@ class TestAllTeams(object):
     def teardown_class(self):
         self.mock_get_patcher.stop()
 
-    def test_request_response_is_ok(self, teams):
+    def test_request_response_is_ok(self, mock_teams):
         self.mock_get.return_value = Mock(ok=True)
-        self.mock_get.return_value.json.return_value = teams
+        self.mock_get.return_value.json.return_value = mock_teams
 
-        response = get_teams()
+        teams = Teams()
 
-        assert response.ok is True
-        assert response.json() == teams
+        assert teams.get().ok is True
+        assert teams.get().json() == mock_teams
 
     def test_request_response_is_not_ok(self):
         self.mock_get.return_value = Mock(ok=False)
 
-        response = get_teams()
+        teams = Teams()
 
-        assert response is None
+        assert teams.get() is None
 
 
 class TestNBATeams(object):
     @classmethod
     def setup_class(self):
-        self.mock_get_teams_patcher = patch("nba_warehouse.teams.get_teams")
+        self.mock_get_teams_patcher = patch("nba_warehouse.api.requests.get")
         self.mock_get_teams = self.mock_get_teams_patcher.start()
 
     @classmethod
     def teardown_class(self):
         self.mock_get_teams_patcher.stop()
 
-    def test_getting_only_nba_teams(self, teams):
-        nba_teams = get_nba_teams(teams)
+    def test_getting_only_nba_teams(self, mock_teams):
+        self.mock_get_teams.return_value = Mock()
+        self.mock_get_teams.return_value.json.return_value = mock_teams
+        teams = Teams()
+        nba_teams = teams.nba_only()
 
         assert nba_teams == [
-            teams["league"]["standard"][1],
-            teams["league"]["standard"][2],
+            mock_teams["league"]["standard"][1],
+            mock_teams["league"]["standard"][2],
         ]
 
 
 @skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
-def test_integeration_contract(teams):
+def test_integeration_contract(mock_teams):
     # Call the service to hit actual API
-    response = get_teams()
-    actual_keys = response.json().keys()
+    teams = Teams()
+    actual_keys = teams.get().json().keys()
 
     # Call the esrvice to hit the mocked API
-    with patch("nba_warehouse.teams.requests.get") as mock_get:
+    with patch("nba_warehouse.api.requests.get") as mock_get:
         mock_get.return_value.ok = True
-        mock_get.return_value.json.return_value = teams
+        mock_get.return_value.json.return_value = mock_teams
 
-        mocked = get_teams()
-        mocked_keys = mocked.json().keys()
+        mocked = Teams()
+        mocked_keys = mocked.get().json().keys()
 
     assert list(actual_keys) == list(mocked_keys)

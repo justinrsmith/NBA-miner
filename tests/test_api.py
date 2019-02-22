@@ -1,5 +1,7 @@
 from unittest.mock import Mock, patch
 
+import pytest
+
 from nba_warehouse.api import NBAApi
 
 
@@ -19,11 +21,16 @@ class TestNBAApi(object):
     def test_nba_api_url_is_correct(self):
         assert self.nba_api.url == self.url
 
+    def test_nba_api_no_url_provided_raises_exception(self):
+        with pytest.raises(TypeError):
+            NBAApi()
+
     def test_get_data_from_nba_api_is_ok(self):
         self.mock_get.return_value = Mock(ok=True)
 
         response = self.nba_api.get()
 
+        assert self.mock_get.called == True
         assert response.ok is True
 
     def test_get_data_from_nba_api_is_not_ok(self):
@@ -31,4 +38,5 @@ class TestNBAApi(object):
 
         response = self.nba_api.get()
 
+        assert self.mock_get.called == True
         assert response is None

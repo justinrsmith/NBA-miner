@@ -6,7 +6,6 @@ import pytest
 
 from constants import SKIP_REAL
 from nba_warehouse.games import Games
-from nba_warehouse.teams import get_teams
 
 
 @pytest.fixture
@@ -468,7 +467,7 @@ class TestGetGames(object):
 class TestFormatGames(object):
     @classmethod
     def setup_class(self):
-        self.mock_get_games_patcher = patch("nba_warehouse.games.Games.get")
+        self.mock_get_games_patcher = patch("nba_warehouse.api.requests.get")
         self.mock_get_games = self.mock_get_games_patcher.start()
         self.date = datetime(2018, 11, 30)
 
@@ -502,7 +501,9 @@ class TestFormatGames(object):
         formatted_games = self.mock_get_games.formatted()
 
         assert self.mock_get_games.called == True
-        assert len(self.mock_get_games.data.json()["resultSets"][0]["rowSet"]) == len(formatted_games)
+        assert len(
+            self.mock_get_games.response.json()["resultSets"][0]["rowSet"]
+        ) == len(formatted_games)
 
 
 @skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
