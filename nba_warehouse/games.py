@@ -6,13 +6,14 @@ from nba_warehouse.api import NBAApi
 BASE_URL = "https://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00"
 
 
-class Games(NBAApi):
+class ScheduleDay(NBAApi):
     def __init__(self, date):
         super().__init__(BASE_URL + f'&gameDate={date.strftime("%m/%d/%Y")}')
 
     def formatted(self):
-        r = self.get()
-        games = r.json()
+        response = self.get()
+        games = response.json()
+        
         game_header_keys = [
             header.lower() for header in games["resultSets"][0]["headers"]
         ]

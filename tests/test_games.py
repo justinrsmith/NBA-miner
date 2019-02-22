@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 import pytest
 
 from constants import SKIP_REAL
-from nba_warehouse.games import Games
+from nba_warehouse.games import ScheduleDay
 
 
 @pytest.fixture
@@ -427,7 +427,7 @@ def mock_games():
     }
 
 
-class TestGetGames(object):
+class TestScheduleDayGet(object):
     @classmethod
     def setup_class(self):
         self.mock_get_patcher = patch("nba_warehouse.api.requests.get")
@@ -442,24 +442,24 @@ class TestGetGames(object):
         self.mock_get.return_value = Mock(ok=True)
         self.mock_get.return_value.json.return_value = mock_games
 
-        games = Games(self.date)
+        schedule_day = ScheduleDay(self.date)
 
-        assert games.get().ok is True
-        assert games.get().json() == mock_games
+        assert schedule_day.get().ok is True
+        assert schedule_day.get().json() == mock_games
 
     def test_request_response_is_not_ok(self):
         self.mock_get.return_value = Mock(ok=False)
 
-        games = Games(self.date)
-        assert games.get() is None
+        schedule_day = ScheduleDay(self.date)
+        assert schedule_day.get() is None
 
     def test_games_are_for_provided_date(self, mock_games):
         self.mock_get.return_value = Mock(ok=True)
         self.mock_get.return_value.json.return_value = mock_games
 
-        games = Games(self.date)
+        schedule_day = ScheduleDay(self.date)
 
-        assert games.get().json()["parameters"]["GameDate"] == self.date.strftime(
+        assert schedule_day.get().json()["parameters"]["GameDate"] == self.date.strftime(
             "%m/%d/%Y"
         )
 
@@ -478,8 +478,8 @@ class TestFormatGames(object):
     def test_games_formatted_as_expected(self, mock_games):
         self.mock_get_games.return_value = Mock()
         self.mock_get_games.return_value.json.return_value = mock_games
-        games = Games(self.date)
-        formatted_games = games.formatted()
+        schedule_day = ScheduleDay(self.date)
+        formatted_games = schedule_day.formatted()
 
         expected_keys = [
             "game_id",
