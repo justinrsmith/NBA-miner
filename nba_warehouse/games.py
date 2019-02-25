@@ -38,7 +38,9 @@ class ScheduleDay(NBAApi):
                 for json_game in games_from_json:
                     game = Game(
                         json_game["game_id"],
-                        datetime.strptime(json_game["game_date_est"], "%Y-%m-%dT%H:%M:%S").date(), 
+                        datetime.strptime(
+                            json_game["game_date_est"], "%Y-%m-%dT%H:%M:%S"
+                        ).date(),
                         json_game["season"],
                         json_game["home_team_id"],
                         json_game["visitor_team_id"],
@@ -50,7 +52,7 @@ class ScheduleDay(NBAApi):
                                 game.home_pts = detail["pts"]
                             elif detail["team_id"] == json_game["visitor_team_id"]:
                                 game.visitor_pts = detail["pts"]
-                self.games.append(game)
+        self.games.append(game)
 
 
 class Game:
