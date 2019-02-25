@@ -9,13 +9,14 @@ BASE_URL = "https://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00"
 class ScheduleDay(NBAApi):
     def __init__(self, date):
         self.date = date
+        self.games = []
         super().__init__(BASE_URL + f'&gameDate={date.strftime("%m/%d/%Y")}')
 
     def get_json(self):
         request = self.get()
         return request.json()
 
-    def get_games(self):
+    def set_games(self):
         json = self.get_json()
 
         game_header_keys = [
@@ -37,7 +38,7 @@ class ScheduleDay(NBAApi):
                 for json_game in games_from_json:
                     game = Game(
                         json_game["game_id"],
-                        json_game["game_date_est"],
+                        datetime.strptime(json_game["game_date_est"], "%Y-%m-%dT%H:%M:%S").date(), 
                         json_game["season"],
                         json_game["home_team_id"],
                         json_game["visitor_team_id"],
@@ -49,8 +50,7 @@ class ScheduleDay(NBAApi):
                                 game.home_pts = detail["pts"]
                             elif detail["team_id"] == json_game["visitor_team_id"]:
                                 game.visitor_pts = detail["pts"]
-                games.append(game)
-        return games
+                self.games.append(game)
 
 
 class Game:

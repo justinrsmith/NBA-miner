@@ -36,7 +36,7 @@ class TestScheduleDay(object):
     def setup_class(self):
         self.mock_requests_patcher = patch("nba_warehouse.api.requests.get")
         self.mock_requests = self.mock_requests_patcher.start()
-        self.date = datetime(2018, 11, 30)
+        self.date = datetime(2018, 11, 30).date()   
 
     @classmethod
     def teardown_class(self):
@@ -54,9 +54,9 @@ class TestScheduleDay(object):
         self.mock_requests.return_value.json.return_value = mock_json_games
 
         schedule_day = ScheduleDay(self.date)
-        games = schedule_day.get_json()
+        json_games = schedule_day.get_json()
 
-        assert games == mock_json_games
+        assert json_games == mock_json_games
 
     def test_get_json_is_valid_and_for_expected_date(self, mock_json_games):
         """Get games method should return valid json for the correct date"""
@@ -64,19 +64,21 @@ class TestScheduleDay(object):
         self.mock_requests.return_value.json.return_value = mock_json_games
 
         schedule_day = ScheduleDay(self.date)
-        games = schedule_day.get_json()
+        json_games = schedule_day.get_json()
 
-        assert games["parameters"]["GameDate"] == self.date.strftime("%m/%d/%Y")
+        assert json_games["parameters"]["GameDate"] == self.date.strftime("%m/%d/%Y")
 
-    def test_get_games_returns_list_of_game_objects(self, mock_json_games):
+    def test_set_games_attribute_to_list_of_games_for_day(self, mock_json_games):
         """Get games method should return a list containing game objects"""
         self.mock_requests.return_value = Mock(ok=True)
         self.mock_requests.return_value.json.return_value = mock_json_games
 
         schedule_day = ScheduleDay(self.date)
+        schedule_day.set_games()
 
-        assert type(schedule_day.get_games()) == list
-        assert type(schedule_day.get_games()[0]) == Game
+        assert type(schedule_day.games) == list
+        assert type(schedule_day.games[0]) == Game
+        assert schedule_day.games[0].date == self.date
 
     def test_get_games_returns_expected_data(self, mock_json_games, mock_games):
         """Should return a valid list of Game objects"""
@@ -84,7 +86,8 @@ class TestScheduleDay(object):
         self.mock_requests.return_value.json.return_value = mock_json_games
 
         schedule_day = ScheduleDay(self.date)
-        assert schedule_day.get_games()[0] in mock_games
+        schedule_day.set_games()
+        assert any(g in mock_games for g in schedule_day.games)
 
     def test_get_games_not_return_expected_data(self, mock_json_games, mock_games):
         """Should return a valid list of Game objects"""
@@ -92,10 +95,8 @@ class TestScheduleDay(object):
         self.mock_requests.return_value.json.return_value = mock_json_games
 
         schedule_day = ScheduleDay(self.date)
-        assert (
-            Game("0444440", datetime(2018, 11, 30), 2018, 26, 36, 105, 104)
-            != schedule_day.get_games()[0]
-        )
+        schedule_day.set_games()
+        assert Game("0444440", datetime(2018, 11, 30), 2018, 26, 36, 105, 104) not in schedule_day.games
 
 
 class TestGame(object):
