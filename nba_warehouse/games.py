@@ -12,8 +12,8 @@ class ScheduleDay(NBAApi):
         super().__init__(BASE_URL + f'&gameDate={date.strftime("%m/%d/%Y")}')
 
     def get_json(self):
-        r = self.get()
-        return r.json()
+        request = self.get()
+        return request.json()
 
     def get_games(self):
         json = self.get_json()
