@@ -40,7 +40,7 @@ class ScheduleDay(NBAApi):
                         json_game["game_id"],
                         datetime.strptime(
                             json_game["game_date_est"], "%Y-%m-%dT%H:%M:%S"
-                        ).date(),
+                        ),
                         json_game["season"],
                         json_game["home_team_id"],
                         json_game["visitor_team_id"],
