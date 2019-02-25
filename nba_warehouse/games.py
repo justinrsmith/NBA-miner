@@ -53,7 +53,7 @@ class ScheduleDay(NBAApi):
         return games
 
 
-class Game(object):
+class Game:
     def __init__(
         self,
         id,

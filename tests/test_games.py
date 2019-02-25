@@ -17,6 +17,18 @@ def mock_json_games():
 @pytest.fixture
 def mock_games():
     return games
+    
+@pytest.fixture
+def mock_game():
+    return Game(
+        1,
+        datetime(2018, 11, 30),
+        2018,
+        24,
+        35,
+        128,
+        121
+    )
 
 
 class TestScheduleDay(object):
@@ -97,24 +109,15 @@ class TestGame(object):
         self.home_pts = 128
         self.visitor_pts = 121
 
-    def test_game_attributes_are_expected_values(self):
+    def test_game_attributes_are_expected_values(self, mock_game):
         """Game attributes should be expected values"""
-        game = Game(
-            self.id,
-            self.date,
-            self.season,
-            self.home_team_id,
-            self.visitor_team_id,
-            self.home_pts,
-            self.visitor_pts,
-        )
-        assert game.id == self.id
-        assert game.date == self.date
-        assert game.season == self.season
-        assert game.home_team_id == self.home_team_id
-        assert game.visitor_team_id == self.visitor_team_id
-        assert game.home_pts == self.home_pts
-        assert game.visitor_pts == self.visitor_pts
+        assert mock_game.id == self.id
+        assert mock_game.date == self.date
+        assert mock_game.season == self.season
+        assert mock_game.home_team_id == self.home_team_id
+        assert mock_game.visitor_team_id == self.visitor_team_id
+        assert mock_game.home_pts == self.home_pts
+        assert mock_game.visitor_pts == self.visitor_pts
 
     def test_game_score_defaults_to_none(self):
         """Game home and away score should default to None if not provided"""
@@ -123,71 +126,35 @@ class TestGame(object):
         )
         assert game.home_pts is None
 
-    def test_get_winner_is_home_team(self):
+    def test_get_winner_is_home_team(self, mock_game):
         """Game winner method should return team id of winner"""
-        game = Game(
-            self.id,
-            self.date,
-            self.season,
-            self.home_team_id,
-            self.visitor_team_id,
-            self.home_pts,
-            self.visitor_pts,
-        )
-        assert game.winner() == self.home_team_id
+        assert mock_game.winner() == self.home_team_id
 
-    def test_get_winner_is_visiting_team(self):
+    def test_get_winner_is_visiting_team(self, mock_game):
         """Game winner method should return team id of winner"""
-        game = Game(
-            self.id,
-            self.date,
-            self.season,
-            self.home_team_id,
-            self.visitor_team_id,
-            self.home_pts,
-            131,
-        )
-        assert game.winner() == self.visitor_team_id
+        mock_game.visitor_pts = 131
+        assert mock_game.winner() == self.visitor_team_id
 
-    def test_get_winner_is_none_when_no_score(self):
+    def test_get_winner_is_none_when_no_score(self, mock_game):
         """Game winner method should return None if no score exists yet"""
-        game = Game(
-            self.id, self.date, self.season, self.home_team_id, self.visitor_team_id
-        )
-        assert game.winner() is None
+        mock_game.home_pts = None
+        mock_game.visitor_pts = None
+        assert mock_game.winner() is None
 
-    def test_get_loser_is_home_team(self):
+    def test_get_loser_is_home_team(self, mock_game):
         """Game loser method should return team id of game loser"""
-        game = Game(
-            self.id,
-            self.date,
-            self.season,
-            self.home_team_id,
-            self.visitor_team_id,
-            101,
-            self.visitor_pts,
-        )
-        assert game.loser() == self.home_team_id
+        mock_game.visitor_pts = 131
+        assert mock_game.loser() == self.home_team_id
 
-    def test_get_loser_is_visiting_team(self):
+    def test_get_loser_is_visiting_team(self, mock_game):
         """Game loser method should return team id of game loser"""
-        game = Game(
-            self.id,
-            self.date,
-            self.season,
-            self.home_team_id,
-            self.visitor_team_id,
-            self.home_pts,
-            self.visitor_pts,
-        )
-        assert game.loser() == self.visitor_team_id
+        assert mock_game.loser() == self.visitor_team_id
 
-    def test_get_loser_is_none_when_no_score(self):
+    def test_get_loser_is_none_when_no_score(self, mock_game):
         """Game loser method should return None if no score exists yet"""
-        game = Game(
-            self.id, self.date, self.season, self.home_team_id, self.visitor_team_id
-        )
-        assert game.loser() is None
+        mock_game.home_pts = None
+        mock_game.visitor_pts = None
+        assert mock_game.loser() is None
 
 
 @skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
