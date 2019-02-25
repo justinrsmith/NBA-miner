@@ -1,523 +1,207 @@
 from datetime import datetime
 from unittest import skipIf
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
 from constants import SKIP_REAL
-from nba_warehouse.games import Games
+from tests.fixtures import json_games, games
+from nba_warehouse.games import Game, ScheduleDay
+
+
+@pytest.fixture
+def mock_json_games():
+    return json_games
 
 
 @pytest.fixture
 def mock_games():
-    return {
-        "resource": "scoreboardV2",
-        "parameters": {"GameDate": "11/30/2018", "LeagueID": "00", "DayOffset": "0"},
-        "resultSets": [
-            {
-                "name": "GameHeader",
-                "headers": [
-                    "GAME_DATE_EST",
-                    "GAME_SEQUENCE",
-                    "GAME_ID",
-                    "GAME_STATUS_ID",
-                    "GAME_STATUS_TEXT",
-                    "GAMECODE",
-                    "HOME_TEAM_ID",
-                    "VISITOR_TEAM_ID",
-                    "SEASON",
-                    "LIVE_PERIOD",
-                    "LIVE_PC_TIME",
-                    "NATL_TV_BROADCASTER_ABBREVIATION",
-                    "HOME_TV_BROADCASTER_ABBREVIATION",
-                    "AWAY_TV_BROADCASTER_ABBREVIATION",
-                    "LIVE_PERIOD_TIME_BCAST",
-                    "ARENA_NAME",
-                    "WH_STATUS",
-                ],
-                "rowSet": [
-                    [
-                        "2018-11-30T00:00:00",
-                        1,
-                        "0021800319",
-                        3,
-                        "Final",
-                        "20181130/CLEBOS",
-                        1610612738,
-                        1610612739,
-                        "2018",
-                        4,
-                        "     ",
-                        "",
-                        "NBCSB",
-                        "FSO",
-                        "Q4       - ",
-                        "TD Garden",
-                        1,
-                    ],
-                    [
-                        "2018-11-30T00:00:00",
-                        2,
-                        "0021800320",
-                        3,
-                        "Final",
-                        "20181130/UTACHA",
-                        1610612766,
-                        1610612762,
-                        "2018",
-                        4,
-                        "     ",
-                        "",
-                        "FSSE-CHA",
-                        "ATTSN-RM",
-                        "Q4       - ",
-                        "Spectrum Center",
-                        1,
-                    ],
-                ],
-            },
-            {
-                "name": "LineScore",
-                "headers": [
-                    "GAME_DATE_EST",
-                    "GAME_SEQUENCE",
-                    "GAME_ID",
-                    "TEAM_ID",
-                    "TEAM_ABBREVIATION",
-                    "TEAM_CITY_NAME",
-                    "TEAM_NAME",
-                    "TEAM_WINS_LOSSES",
-                    "PTS_QTR1",
-                    "PTS_QTR2",
-                    "PTS_QTR3",
-                    "PTS_QTR4",
-                    "PTS_OT1",
-                    "PTS_OT2",
-                    "PTS_OT3",
-                    "PTS_OT4",
-                    "PTS_OT5",
-                    "PTS_OT6",
-                    "PTS_OT7",
-                    "PTS_OT8",
-                    "PTS_OT9",
-                    "PTS_OT10",
-                    "PTS",
-                    "FG_PCT",
-                    "FT_PCT",
-                    "FG3_PCT",
-                    "AST",
-                    "REB",
-                    "TOV",
-                ],
-                "rowSet": [
-                    [
-                        "2018-11-30T00:00:00",
-                        1,
-                        "0021800319",
-                        1610612739,
-                        "CLE",
-                        "Cleveland",
-                        "Cavaliers",
-                        "4-17",
-                        26,
-                        26,
-                        20,
-                        23,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        95,
-                        0.39,
-                        0.8,
-                        0.318,
-                        18,
-                        36,
-                        13,
-                    ],
-                    [
-                        "2018-11-30T00:00:00",
-                        1,
-                        "0021800319",
-                        1610612738,
-                        "BOS",
-                        "Boston",
-                        "Celtics",
-                        "12-10",
-                        30,
-                        32,
-                        39,
-                        27,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        128,
-                        0.533,
-                        0.813,
-                        0.548,
-                        30,
-                        47,
-                        10,
-                    ],
-                ],
-            },
-            {
-                "name": "SeriesStandings",
-                "headers": [
-                    "GAME_ID",
-                    "HOME_TEAM_ID",
-                    "VISITOR_TEAM_ID",
-                    "GAME_DATE_EST",
-                    "HOME_TEAM_WINS",
-                    "HOME_TEAM_LOSSES",
-                    "SERIES_LEADER",
-                ],
-                "rowSet": [
-                    [
-                        "0021800319",
-                        1610612738,
-                        1610612739,
-                        "2018-11-30T00:00:00",
-                        3,
-                        0,
-                        "Boston",
-                    ],
-                    [
-                        "0021800320",
-                        1610612766,
-                        1610612762,
-                        "2018-11-30T00:00:00",
-                        0,
-                        1,
-                        "Utah",
-                    ],
-                ],
-            },
-            {
-                "name": "LastMeeting",
-                "headers": [
-                    "GAME_ID",
-                    "LAST_GAME_ID",
-                    "LAST_GAME_DATE_EST",
-                    "LAST_GAME_HOME_TEAM_ID",
-                    "LAST_GAME_HOME_TEAM_CITY",
-                    "LAST_GAME_HOME_TEAM_NAME",
-                    "LAST_GAME_HOME_TEAM_ABBREVIATION",
-                    "LAST_GAME_HOME_TEAM_POINTS",
-                    "LAST_GAME_VISITOR_TEAM_ID",
-                    "LAST_GAME_VISITOR_TEAM_CITY",
-                    "LAST_GAME_VISITOR_TEAM_NAME",
-                    "LAST_GAME_VISITOR_TEAM_CITY1",
-                    "LAST_GAME_VISITOR_TEAM_POINTS",
-                ],
-                "rowSet": [
-                    [
-                        "0021800319",
-                        "0011800040",
-                        "2018-10-06T00:00:00",
-                        1610612738,
-                        "Boston",
-                        "Celtics",
-                        "BOS",
-                        102,
-                        1610612739,
-                        "Cleveland",
-                        "Cavaliers",
-                        "CLE",
-                        113,
-                    ],
-                    [
-                        "0021800320",
-                        "0021700824",
-                        "2018-02-09T00:00:00",
-                        1610612766,
-                        "Charlotte",
-                        "Hornets",
-                        "CHA",
-                        94,
-                        1610612762,
-                        "Utah",
-                        "Jazz",
-                        "UTA",
-                        106,
-                    ],
-                ],
-            },
-            {
-                "name": "EastConfStandingsByDay",
-                "headers": [
-                    "TEAM_ID",
-                    "LEAGUE_ID",
-                    "SEASON_ID",
-                    "STANDINGSDATE",
-                    "CONFERENCE",
-                    "TEAM",
-                    "G",
-                    "W",
-                    "L",
-                    "W_PCT",
-                    "HOME_RECORD",
-                    "ROAD_RECORD",
-                ],
-                "rowSet": [
-                    [
-                        1610612761,
-                        "00",
-                        "22018",
-                        "11/30/2018",
-                        "East",
-                        "Toronto",
-                        23,
-                        19,
-                        4,
-                        0.826,
-                        "10-2",
-                        "9-2",
-                    ],
-                    [
-                        1610612749,
-                        "00",
-                        "22018",
-                        "11/30/2018",
-                        "East",
-                        "Milwaukee",
-                        21,
-                        15,
-                        6,
-                        0.714,
-                        "11-2",
-                        "4-4",
-                    ],
-                ],
-            },
-            {
-                "name": "WestConfStandingsByDay",
-                "headers": [
-                    "TEAM_ID",
-                    "LEAGUE_ID",
-                    "SEASON_ID",
-                    "STANDINGSDATE",
-                    "CONFERENCE",
-                    "TEAM",
-                    "G",
-                    "W",
-                    "L",
-                    "W_PCT",
-                    "HOME_RECORD",
-                    "ROAD_RECORD",
-                ],
-                "rowSet": [
-                    [
-                        1610612746,
-                        "00",
-                        "22018",
-                        "11/30/2018",
-                        "West",
-                        "LA Clippers",
-                        21,
-                        15,
-                        6,
-                        0.714,
-                        "9-1",
-                        "6-5",
-                    ],
-                    [
-                        1610612743,
-                        "00",
-                        "22018",
-                        "11/30/2018",
-                        "West",
-                        "Denver",
-                        22,
-                        15,
-                        7,
-                        0.682,
-                        "9-3",
-                        "6-4",
-                    ],
-                ],
-            },
-            {
-                "name": "Available",
-                "headers": ["GAME_ID", "PT_AVAILABLE"],
-                "rowSet": [["0021800328", 1], ["0021800326", 1]],
-            },
-            {
-                "name": "TeamLeaders",
-                "headers": [
-                    "GAME_ID",
-                    "TEAM_ID",
-                    "TEAM_CITY",
-                    "TEAM_NICKNAME",
-                    "TEAM_ABBREVIATION",
-                    "PTS_PLAYER_ID",
-                    "PTS_PLAYER_NAME",
-                    "PTS",
-                    "REB_PLAYER_ID",
-                    "REB_PLAYER_NAME",
-                    "REB",
-                    "AST_PLAYER_ID",
-                    "AST_PLAYER_NAME",
-                    "AST",
-                ],
-                "rowSet": [
-                    [
-                        "0021800319",
-                        1610612738,
-                        "Boston",
-                        "Celtics",
-                        "BOS",
-                        202681,
-                        "Kyrie Irving",
-                        29,
-                        203382,
-                        "Aron Baynes",
-                        9,
-                        203935,
-                        "Marcus Smart",
-                        7,
-                    ],
-                    [
-                        "0021800319",
-                        1610612739,
-                        "Cleveland",
-                        "Cavaliers",
-                        "CLE",
-                        203903,
-                        "Jordan Clarkson",
-                        16,
-                        202684,
-                        "Tristan Thompson",
-                        12,
-                        202684,
-                        "Tristan Thompson",
-                        4,
-                    ],
-                ],
-            },
-            {
-                "name": "TicketLinks",
-                "headers": ["GAME_ID", "LEAG_TIX"],
-                "rowSet": [
-                    [
-                        "0021800319",
-                        "https://ticketmaster.com/event/0100550ADB09D7C3?brand=nba&extcmp=gw513142&wt.mc_id=NBA_LEAGUE_BOS_SINGLE_GAME_LINK&utm_source=NBA.com&utm_medium=client&utm_campaign=NBA_LEAGUE_BOS&utm_content=SINGLE_GAME_LINK",
-                    ],
-                    [
-                        "0021800329",
-                        "https://www.ticketmaster.com/portland-trail-blazers-vs-denver-nuggets-portland-oregon-11-30-2018/event/0F005515A8904734?brand=nba&extcmp=gw513160&wt.mc_id=NBA_LEAGUE_POR_SINGLE_GAME_LINK&utm_source=NBA.com&utm_medium=client&utm_campaign=NBA_LEAGUE_POR&utm",
-                    ],
-                ],
-            },
-            {"name": "WinProbability", "headers": [], "rowSet": []},
-        ],
-    }
+    return games
 
 
-class TestGetGames(object):
+class TestScheduleDay(object):
     @classmethod
     def setup_class(self):
-        self.mock_get_patcher = patch("nba_warehouse.api.requests.get")
-        self.mock_get = self.mock_get_patcher.start()
+        self.mock_requests_patcher = patch("nba_warehouse.api.requests.get")
+        self.mock_requests = self.mock_requests_patcher.start()
         self.date = datetime(2018, 11, 30)
 
     @classmethod
     def teardown_class(self):
-        self.mock_get_patcher.stop()
+        self.mock_requests_patcher.stop()
 
-    def test_request_response_is_ok(self, mock_games):
-        self.mock_get.return_value = Mock(ok=True)
-        self.mock_get.return_value.json.return_value = mock_games
+    def test_date_attribute_is_expected_value(self):
+        """ScheduleDay object data should match value passed in"""
+        schedule_day = ScheduleDay(self.date)
 
-        games = Games(self.date)
+        assert self.date == schedule_day.date
 
-        assert games.get().ok is True
-        assert games.get().json() == mock_games
+    def test_get_json_is_valid(self, mock_json_games):
+        """Get games method should return valid json"""
+        self.mock_requests.return_value = Mock(ok=True)
+        self.mock_requests.return_value.json.return_value = mock_json_games
 
-    def test_request_response_is_not_ok(self):
-        self.mock_get.return_value = Mock(ok=False)
+        schedule_day = ScheduleDay(self.date)
+        games = schedule_day.get_json()
 
-        games = Games(self.date)
-        assert games.get() is None
+        assert games == mock_json_games
 
-    def test_games_are_for_provided_date(self, mock_games):
-        self.mock_get.return_value = Mock(ok=True)
-        self.mock_get.return_value.json.return_value = mock_games
+    def test_get_json_is_valid_and_for_expected_date(self, mock_json_games):
+        """Get games method should return valid json for the correct date"""
+        self.mock_requests.return_value = Mock(ok=True)
+        self.mock_requests.return_value.json.return_value = mock_json_games
 
-        games = Games(self.date)
+        schedule_day = ScheduleDay(self.date)
+        games = schedule_day.get_json()
 
-        assert games.get().json()["parameters"]["GameDate"] == self.date.strftime(
-            "%m/%d/%Y"
+        assert games["parameters"]["GameDate"] == self.date.strftime("%m/%d/%Y")
+
+    def test_get_games_returns_list_of_game_objects(self, mock_json_games):
+        """Get games method should return a list containing game objects"""
+        self.mock_requests.return_value = Mock(ok=True)
+        self.mock_requests.return_value.json.return_value = mock_json_games
+
+        schedule_day = ScheduleDay(self.date)
+
+        assert type(schedule_day.get_games()) == list
+        assert type(schedule_day.get_games()[0]) == Game
+
+    def test_get_games_returns_expected_data(self, mock_json_games, mock_games):
+        """Should return a valid list of Game objects"""
+        self.mock_requests.return_value = Mock(ok=True)
+        self.mock_requests.return_value.json.return_value = mock_json_games
+
+        schedule_day = ScheduleDay(self.date)
+        assert schedule_day.get_games()[0] in mock_games
+
+    def test_get_games_not_return_expected_data(self, mock_json_games, mock_games):
+        """Should return a valid list of Game objects"""
+        self.mock_requests.return_value = Mock(ok=True)
+        self.mock_requests.return_value.json.return_value = mock_json_games
+
+        schedule_day = ScheduleDay(self.date)
+        assert (
+            Game("0444440", datetime(2018, 11, 30), 2018, 26, 36, 105, 104)
+            != schedule_day.get_games()[0]
         )
 
 
-class TestFormatGames(object):
+class TestGame(object):
     @classmethod
     def setup_class(self):
-        self.mock_get_games_patcher = patch("nba_warehouse.api.requests.get")
-        self.mock_get_games = self.mock_get_games_patcher.start()
+        self.id = 1
         self.date = datetime(2018, 11, 30)
+        self.season = 2018
+        self.home_team_id = 24
+        self.visitor_team_id = 35
+        self.home_pts = 128
+        self.visitor_pts = 121
 
-    @classmethod
-    def teardown_class(self):
-        self.mock_get_games_patcher.stop()
+    def test_game_attributes_are_expected_values(self):
+        """Game attributes should be expected values"""
+        game = Game(
+            self.id,
+            self.date,
+            self.season,
+            self.home_team_id,
+            self.visitor_team_id,
+            self.home_pts,
+            self.visitor_pts,
+        )
+        assert game.id == self.id
+        assert game.date == self.date
+        assert game.season == self.season
+        assert game.home_team_id == self.home_team_id
+        assert game.visitor_team_id == self.visitor_team_id
+        assert game.home_pts == self.home_pts
+        assert game.visitor_pts == self.visitor_pts
 
-    def test_games_formatted_as_expected(self, mock_games):
-        self.mock_get_games.return_value = Mock()
-        self.mock_get_games.return_value.json.return_value = mock_games
-        games = Games(self.date)
-        formatted_games = games.formatted()
+    def test_game_score_defaults_to_none(self):
+        """Game home and away score should default to None if not provided"""
+        game = Game(
+            self.id, self.date, self.season, self.home_team_id, self.visitor_team_id
+        )
+        assert game.home_pts is None
 
-        expected_keys = [
-            "game_id",
-            "game_date_est",
-            "season",
-            "home_team_id",
-            "visitor_team_id",
-            "visitor_pts",
-            "home_pts",
-        ]
+    def test_get_winner_is_home_team(self):
+        """Game winner method should return team id of winner"""
+        game = Game(
+            self.id,
+            self.date,
+            self.season,
+            self.home_team_id,
+            self.visitor_team_id,
+            self.home_pts,
+            self.visitor_pts,
+        )
+        assert game.winner() == self.home_team_id
 
-        assert self.mock_get_games.called == True
-        assert type(formatted_games) == list
-        assert list(formatted_games[0].keys()) == expected_keys
+    def test_get_winner_is_visiting_team(self):
+        """Game winner method should return team id of winner"""
+        game = Game(
+            self.id,
+            self.date,
+            self.season,
+            self.home_team_id,
+            self.visitor_team_id,
+            self.home_pts,
+            131,
+        )
+        assert game.winner() == self.visitor_team_id
 
-    def test_same_number_games_formatted_as_from_api(self, mock_games):
-        self.mock_get_games.return_value = Mock()
-        self.mock_get_games.return_value.json.return_value = mock_games
-        formatted_games = self.mock_get_games.formatted()
+    def test_get_winner_is_none_when_no_score(self):
+        """Game winner method should return None if no score exists yet"""
+        game = Game(
+            self.id, self.date, self.season, self.home_team_id, self.visitor_team_id
+        )
+        assert game.winner() is None
 
-        assert self.mock_get_games.called == True
-        assert len(
-            self.mock_get_games.response.json()["resultSets"][0]["rowSet"]
-        ) == len(formatted_games)
+    def test_get_loser_is_home_team(self):
+        """Game loser method should return team id of game loser"""
+        game = Game(
+            self.id,
+            self.date,
+            self.season,
+            self.home_team_id,
+            self.visitor_team_id,
+            101,
+            self.visitor_pts,
+        )
+        assert game.loser() == self.home_team_id
+
+    def test_get_loser_is_visiting_team(self):
+        """Game loser method should return team id of game loser"""
+        game = Game(
+            self.id,
+            self.date,
+            self.season,
+            self.home_team_id,
+            self.visitor_team_id,
+            self.home_pts,
+            self.visitor_pts,
+        )
+        assert game.loser() == self.visitor_team_id
+
+    def test_get_loser_is_none_when_no_score(self):
+        """Game loser method should return None if no score exists yet"""
+        game = Game(
+            self.id, self.date, self.season, self.home_team_id, self.visitor_team_id
+        )
+        assert game.loser() is None
 
 
 @skipIf(SKIP_REAL, "Skipping tests that hit the real API server")
-def test_integeration_contract(mock_games):
+def test_integeration_contract(mock_json_games):
     # Call the service to hit actual API
-    games = Games(datetime(2018, 11, 30))
-    actual_keys = games.get().json().keys()
+    schedule_day = ScheduleDay(datetime(2018, 11, 30))
+    actual_keys = schedule_day.get().json().keys()
 
     # Call the service to hit the mocked API
     with patch("nba_warehouse.api.requests.get") as mock_get:
         mock_get.return_value.ok = True
-        mock_get.return_value.json.return_value = mock_games
+        mock_get.return_value.json.return_value = mock_json_games
 
-        mocked = Games(datetime(2018, 11, 30))
+        mocked = ScheduleDay(datetime(2018, 11, 30))
         mocked_keys = mocked.get().json().keys()
 
     assert list(actual_keys) == list(mocked_keys)
