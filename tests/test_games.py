@@ -29,7 +29,7 @@ class TestScheduleDay(object):
     def setup_class(self):
         self.mock_requests_patcher = patch("nba_warehouse.api.requests.get")
         self.mock_requests = self.mock_requests_patcher.start()
-        self.date = datetime(2018, 11, 30).date()
+        self.date = datetime(2018, 11, 30)
         self.schedule_day = ScheduleDay(self.date)
 
     @classmethod
@@ -83,7 +83,8 @@ class TestScheduleDay(object):
         self.mock_requests.return_value.json.return_value = mock_json_games
 
         self.schedule_day.set_games()
-        assert any(g in mock_games for g in self.schedule_day.games)
+        assert self.schedule_day.games[0] in mock_games
+        assert self.schedule_day.games[1] in mock_games
 
     def test_get_games_not_return_expected_data(self, mock_json_games, mock_games):
         """Should return a valid list of Game objects"""
