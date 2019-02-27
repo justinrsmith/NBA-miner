@@ -126,35 +126,24 @@ class TestGame(object):
         )
         assert game.home_pts is None
 
-    def test_get_winner_is_home_team(self, mock_game):
-        """Game winner method should return team id of winner"""
-        assert mock_game.winner() == self.home_team_id
+    def test_get_outcome_is_dict(self, mock_game):
+        """Outcome should be a dict if not None"""
+        assert type(mock_game.outcome()) is dict
 
-    def test_get_winner_is_visiting_team(self, mock_game):
-        """Game winner method should return team id of winner"""
-        mock_game.visitor_pts = 131
-        assert mock_game.winner() == self.visitor_team_id
+    def test_get_outcome_winner_is_expected(self, mock_game):
+        """Home team scored more so winner should be home team"""
+        assert mock_game.outcome()["winner"] == self.home_team_id
 
-    def test_get_winner_is_none_when_no_score(self, mock_game):
-        """Game winner method should return None if no score exists yet"""
+    def test_get_outcome_loser_is_expected(self, mock_game):
+        """Home team scored less so loser should be home team"""
+        mock_game.home_pts = 119
+        assert mock_game.outcome()["loser"] == self.home_team_id
+
+    def test_get_outcome_is_none(self, mock_game):
+        """If no points yet then outcome should return None"""
         mock_game.home_pts = None
         mock_game.visitor_pts = None
-        assert mock_game.winner() is None
-
-    def test_get_loser_is_home_team(self, mock_game):
-        """Game loser method should return team id of game loser"""
-        mock_game.visitor_pts = 131
-        assert mock_game.loser() == self.home_team_id
-
-    def test_get_loser_is_visiting_team(self, mock_game):
-        """Game loser method should return team id of game loser"""
-        assert mock_game.loser() == self.visitor_team_id
-
-    def test_get_loser_is_none_when_no_score(self, mock_game):
-        """Game loser method should return None if no score exists yet"""
-        mock_game.home_pts = None
-        mock_game.visitor_pts = None
-        assert mock_game.loser() is None
+        assert mock_game.outcome() is None
 
     def test_games_with_different_id_not_equal(self, mock_game):
         """Games with different id should not be equal"""

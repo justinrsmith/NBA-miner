@@ -1,0 +1,24 @@
+ScheduleDay => NBAApi
+    - attributes
+        - date
+    - methods
+        - get_games
+Game
+    - attributes
+        - id
+        - game_date_est ??
+        - season
+        - home_team_id
+        - vistior_team_id
+        - home_pts
+        - visitor_pts
+
+    - methods
+        - string rep
+        - winner
+        - loser
+
+
+Todo
+    - add test for if ScheduleDay.get_json() returns None
+    - call set_days two times in a row and data gets doubled

@@ -1,3 +1,4 @@
+from dataclasses import dataclass, field
 from datetime import datetime
 
 from nba_warehouse.api import NBAApi
@@ -6,92 +7,70 @@ from nba_warehouse.api import NBAApi
 BASE_URL = "https://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00"
 
 
+@dataclass
 class ScheduleDay(NBAApi):
-    def __init__(self, date):
-        self.date = date
-        self.games = []
-        super().__init__(BASE_URL + f'&gameDate={date.strftime("%m/%d/%Y")}')
+    date: datetime
+    games: list = field(default_factory=list)
 
-    def get_json(self):
+    def __post_init__(self):
+        super().__init__(BASE_URL + f'&gameDate={self.date.strftime("%m/%d/%Y")}')
+
+    def get_json(self) -> dict:
         request = self.get()
         return request.json()
 
-    def set_games(self):
+    def set_games(self) -> None:
         json = self.get_json()
 
-        game_header_keys = [
-            header.lower() for header in json["resultSets"][0]["headers"]
-        ]
-        games_from_json = []
-        for game in json["resultSets"][0]["rowSet"]:
-            games_from_json.append(dict(zip(game_header_keys, game)))
-
-            game_detail_keys = [
+        if json:
+            self.games = []
+            # Get the data keys for GameHeader
+            game_header_keys = [
+                header.lower() for header in json["resultSets"][0]["headers"]
+            ]
+            game_line_score_keys = [
                 header.lower() for header in json["resultSets"][1]["headers"]
             ]
-            game_detail_values = json["resultSets"][1]["rowSet"]
-            games_detail = []
-            for game_detail in game_detail_values:
-                games_detail.append(dict(zip(game_detail_keys, game_detail)))
 
-                games = []
-                for json_game in games_from_json:
-                    game = Game(
-                        json_game["game_id"],
-                        datetime.strptime(
-                            json_game["game_date_est"], "%Y-%m-%dT%H:%M:%S"
-                        ),
-                        json_game["season"],
-                        json_game["home_team_id"],
-                        json_game["visitor_team_id"],
-                    )
+            header_rows = []  # Store GameHeader data as dicts
+            for header_row in json["resultSets"][0][
+                "rowSet"
+            ]:  # Loop GameHeader data rows
+                keyed_row = dict(zip(game_header_keys, header_row))
+                game = Game(
+                    str(keyed_row["game_id"]),
+                    datetime.strptime(keyed_row["game_date_est"], "%Y-%m-%dT%H:%M:%S"),
+                    int(keyed_row["season"]),
+                    keyed_row["home_team_id"],
+                    keyed_row["visitor_team_id"],
+                )
 
-                    for detail in games_detail:
-                        if detail["game_id"] == json_game["game_id"]:
-                            if detail["team_id"] == json_game["home_team_id"]:
-                                game.home_pts = detail["pts"]
-                            elif detail["team_id"] == json_game["visitor_team_id"]:
-                                game.visitor_pts = detail["pts"]
-        self.games.append(game)
+                for line_row in json["resultSets"][1]["rowSet"]:
+                    keyed_line_row = dict(zip(game_line_score_keys, line_row))
+
+                    if keyed_line_row["game_id"] == keyed_row["game_id"]:
+                        if keyed_line_row["team_id"] == keyed_row["home_team_id"]:
+                            game.home_pts = keyed_line_row["pts"]
+                        elif keyed_line_row["team_id"] == keyed_row["visitor_team_id"]:
+                            game.visitor_pts = keyed_line_row["pts"]
+                print(game, "game")
+                self.games.append(game)
 
 
+@dataclass
 class Game:
-    def __init__(
-        self,
-        id,
-        date,
-        season,
-        home_team_id,
-        visitor_team_id,
-        home_pts=None,
-        visitor_pts=None,
-    ):
-        self.id = id
-        self.date = date
-        self.season = season
-        self.home_team_id = home_team_id
-        self.visitor_team_id = visitor_team_id
-        self.home_pts = home_pts
-        self.visitor_pts = visitor_pts
+    id: str
+    date: datetime
+    season: int
+    home_team_id: int
+    visitor_team_id: int
+    home_pts: int = None
+    visitor_pts: int = None
 
-    def __eq__(self, other):
-        return self.id == other.id
-
-    def __ne__(self, other):
-        return self.id != other.id
-
-    def winner(self):
+    def outcome(self) -> dict:
         if not self.home_pts or not self.visitor_pts:
             return None
         elif self.home_pts > self.visitor_pts:
-            return self.home_team_id
+            return {"winner": self.home_team_id, "loser": self.visitor_team_id}
         elif self.home_pts < self.visitor_pts:
-            return self.visitor_team_id
-
-    def loser(self):
-        if not self.home_pts or not self.visitor_pts:
-            return None
-        elif self.home_pts > self.visitor_pts:
-            return self.visitor_team_id
-        elif self.home_pts < self.visitor_pts:
-            return self.home_team_id
+            return {"winner": self.visitor_team_id, "loser": self.home_team_id}
