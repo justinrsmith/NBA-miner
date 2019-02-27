@@ -24,36 +24,28 @@ class ScheduleDay(NBAApi):
 
         if json:
             self.games = []
-            # Get the data keys for GameHeader
-            game_header_keys = [
-                header.lower() for header in json["resultSets"][0]["headers"]
-            ]
-            game_line_score_keys = [
-                header.lower() for header in json["resultSets"][1]["headers"]
-            ]
 
             header_rows = []  # Store GameHeader data as dicts
             for header_row in json["resultSets"][0][
                 "rowSet"
             ]:  # Loop GameHeader data rows
-                keyed_row = dict(zip(game_header_keys, header_row))
+                game_header = dict(zip(json["resultSets"][0]["headers"], header_row))
                 game = Game(
-                    str(keyed_row["game_id"]),
-                    datetime.strptime(keyed_row["game_date_est"], "%Y-%m-%dT%H:%M:%S"),
-                    int(keyed_row["season"]),
-                    keyed_row["home_team_id"],
-                    keyed_row["visitor_team_id"],
+                    str(game_header["GAME_ID"]),
+                    datetime.strptime(game_header["GAME_DATE_EST"], "%Y-%m-%dT%H:%M:%S"),
+                    int(game_header["SEASON"]),
+                    game_header["HOME_TEAM_ID"],
+                    game_header["VISITOR_TEAM_ID"],
                 )
 
                 for line_row in json["resultSets"][1]["rowSet"]:
-                    keyed_line_row = dict(zip(game_line_score_keys, line_row))
+                    game_line = dict(zip(json["resultSets"][1]["headers"], line_row))
 
-                    if keyed_line_row["game_id"] == keyed_row["game_id"]:
-                        if keyed_line_row["team_id"] == keyed_row["home_team_id"]:
-                            game.home_pts = keyed_line_row["pts"]
-                        elif keyed_line_row["team_id"] == keyed_row["visitor_team_id"]:
-                            game.visitor_pts = keyed_line_row["pts"]
-                print(game, "game")
+                    if game_line["GAME_ID"] == game_header["GAME_ID"]:
+                        if game_line["TEAM_ID"] == game_header["HOME_TEAM_ID"]:
+                            game.home_pts = game_line["PTS"]
+                        elif game_line["TEAM_ID"] == game_header["VISITOR_TEAM_ID"]:
+                            game.visitor_pts = game_line["PTS"]
                 self.games.append(game)
 
 
