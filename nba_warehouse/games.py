@@ -23,24 +23,34 @@ class ScheduleDay(NBAApi):
         json = self.get_json()
 
         if json:
-            self.games = []
-
-            header_rows = []  # Store GameHeader data as dicts
+            self.games = []  # reset game attribute
             for header_row in json["resultSets"][0][
                 "rowSet"
-            ]:  # Loop GameHeader data rows
+            ]:  # Loop over GameHeader data rows
+                # Combine data with their keys
                 game_header = dict(zip(json["resultSets"][0]["headers"], header_row))
+                # Start setting up game object
                 game = Game(
                     str(game_header["GAME_ID"]),
-                    datetime.strptime(game_header["GAME_DATE_EST"], "%Y-%m-%dT%H:%M:%S"),
+                    datetime.strptime(
+                        game_header["GAME_DATE_EST"], "%Y-%m-%dT%H:%M:%S"
+                    ),
                     int(game_header["SEASON"]),
                     game_header["HOME_TEAM_ID"],
                     game_header["VISITOR_TEAM_ID"],
                 )
 
-                for line_row in json["resultSets"][1]["rowSet"]:
-                    game_line = dict(zip(json["resultSets"][1]["headers"], line_row))
+                for line_score_row in json["resultSets"][1][
+                    "rowSet"
+                ]:  # Loop over LineScore rows
+                    # Combine data with their keys
+                    game_line = dict(
+                        zip(json["resultSets"][1]["headers"], line_score_row)
+                    )
 
+                    # If line row matches header row game id then check if there
+                    # is a match for either team on team_id and set that teams
+                    # points
                     if game_line["GAME_ID"] == game_header["GAME_ID"]:
                         if game_line["TEAM_ID"] == game_header["HOME_TEAM_ID"]:
                             game.home_pts = game_line["PTS"]
