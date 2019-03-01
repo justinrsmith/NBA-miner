@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 
+from typing import List
+
 from nba_warehouse.api import NBAApi
 
 
@@ -8,9 +10,28 @@ BASE_URL = "https://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00"
 
 
 @dataclass
+class Game:
+    id: str
+    date: datetime
+    season: int
+    home_team_id: int
+    visitor_team_id: int
+    home_pts: int = None
+    visitor_pts: int = None
+
+    def outcome(self) -> dict:
+        if not self.home_pts or not self.visitor_pts:
+            return None
+        elif self.home_pts > self.visitor_pts:
+            return {"winner": self.home_team_id, "loser": self.visitor_team_id}
+        elif self.home_pts < self.visitor_pts:
+            return {"winner": self.visitor_team_id, "loser": self.home_team_id}
+
+
+@dataclass
 class ScheduleDay(NBAApi):
     date: datetime
-    games: list = field(default_factory=list)
+    games: List[Game] = None
 
     def __post_init__(self):
         super().__init__(BASE_URL + f'&gameDate={self.date.strftime("%m/%d/%Y")}')
@@ -57,22 +78,3 @@ class ScheduleDay(NBAApi):
                         elif game_line["TEAM_ID"] == game_header["VISITOR_TEAM_ID"]:
                             game.visitor_pts = game_line["PTS"]
                 self.games.append(game)
-
-
-@dataclass
-class Game:
-    id: str
-    date: datetime
-    season: int
-    home_team_id: int
-    visitor_team_id: int
-    home_pts: int = None
-    visitor_pts: int = None
-
-    def outcome(self) -> dict:
-        if not self.home_pts or not self.visitor_pts:
-            return None
-        elif self.home_pts > self.visitor_pts:
-            return {"winner": self.home_team_id, "loser": self.visitor_team_id}
-        elif self.home_pts < self.visitor_pts:
-            return {"winner": self.visitor_team_id, "loser": self.home_team_id}
