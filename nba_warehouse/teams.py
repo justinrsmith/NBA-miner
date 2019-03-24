@@ -14,9 +14,20 @@ def get_teams():
 
     teams = []
     for team_j in teams_json['league']['standard']:
+    
+        if team_j['isNBAFranchise'] == "true":
+            is_nba_franchise = True
+        else:
+            is_nba_franchise = False
+            
+        if team_j['isAllStar'] == "true":
+            is_all_star = True
+        else:
+            is_all_star = False
+    
         team = Team(
-            is_nba_franchise=team_j['isNBAFranchise'],
-            is_all_star=team_j['isAllStar'],
+            is_nba_franchise=is_nba_franchise,
+            is_all_star=is_all_star,
             city=team_j['city'],
             alt_city_name=team_j['altCityName'],
             full_name=team_j['fullName'],
