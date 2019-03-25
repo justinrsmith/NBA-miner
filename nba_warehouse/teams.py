@@ -6,7 +6,9 @@ Team = namedtuple('Team', ['is_nba_franchise', 'is_all_star', 'city',
 'alt_city_name', 'full_name', 'tricode', 'team_id', 'nickname',
 'url_name', 'conf_name', 'div_name'])
 
-def get_teams():
+def get_teams(**kwargs):
+    nba_only = kwargs.get('nba_only', False)
+
     api = NBAApi('https://data.nba.net/prod/v2/2018/teams.json')
     response = api.get()
     if response:
@@ -38,5 +40,8 @@ def get_teams():
             conf_name=team_j['confName'],
             div_name=team_j['divName']
         )
-        teams.append(team)
+        if nba_only and is_nba_franchise:
+            teams.append(team)
+        elif not nba_only:
+            teams.append(team)
     return teams

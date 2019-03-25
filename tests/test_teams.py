@@ -166,6 +166,35 @@ class TestGetTeams(object):
         teams = get_teams()
         
         assert type(teams[0].div_name) == str
+        
+    def test_when_nba_only_param_true_only_nba_returned(self, mock_json_teams):
+        """when nba_only is true get_teams should only return nba_teams"""
+        self.mock_requests.return_value = Mock(ok=True)
+        self.mock_requests.return_value.json.return_value = mock_json_teams
+        
+        teams = get_teams(nba_only=True)
+        
+        assert any(not team.is_nba_franchise for team in teams) == False
+        
+    def test_when_nba_only_param_false_all_returned(self, mock_json_teams):
+        """when nba_only is false all teams should be returned"""
+        self.mock_requests.return_value = Mock(ok=True)
+        self.mock_requests.return_value.json.return_value = mock_json_teams
+        
+        expected = get_teams()
+        
+        teams = get_teams(nba_only=False)
+        
+        assert len(expected) == len(teams)
+        
+  #  def test_when_not_nba_only_param_all_returned(self, mock_json_games):
+   #     """when no nba_only param is passed all teams should be returned"""
+    #    self.mock_requests.return_value = Mock(ok=True)
+     #   self.mock_requests.return_value.json.return_value = mock_json_teams
+        
+      #  teams = get_teams()
+        
+       # assert 
 
 @skipIf(SKIP_REAL, "Skipping tests that hit the real api server")
 def test_integration_contract(mock_json_teams):
