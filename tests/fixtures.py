@@ -489,7 +489,7 @@ json_teams = {
     "_internal": {
         "pubDateTime": "2018-08-30 20:00:04.422",
         "xslt": "xsl/league/roster/marty_teams_list.xsl",
-        "eventName": "league_roster"
+        "eventName": "league_roster",
     },
     "league": {
         "standard": [
@@ -504,7 +504,7 @@ json_teams = {
                 "nickname": "USA",
                 "urlName": "usa",
                 "confName": "East",
-                "divName": "East"
+                "divName": "East",
             },
             {
                 "isNBAFranchise": "false",
@@ -517,7 +517,7 @@ json_teams = {
                 "nickname": "World",
                 "urlName": "world",
                 "confName": "East",
-                "divName": "East"
+                "divName": "East",
             },
             {
                 "isNBAFranchise": "false",
@@ -530,7 +530,7 @@ json_teams = {
                 "nickname": "All-Stars",
                 "urlName": "assn_away",
                 "confName": "East",
-                "divName": "East"
+                "divName": "East",
             },
             {
                 "isNBAFranchise": "false",
@@ -543,7 +543,7 @@ json_teams = {
                 "nickname": "All-Stars",
                 "urlName": "assn_home",
                 "confName": "West",
-                "divName": "West"
+                "divName": "West",
             },
             {
                 "isNBAFranchise": "false",
@@ -556,7 +556,7 @@ json_teams = {
                 "nickname": "Team Giannis",
                 "urlName": "team_giannis",
                 "confName": "East",
-                "divName": "East"
+                "divName": "East",
             },
             {
                 "isNBAFranchise": "false",
@@ -569,7 +569,7 @@ json_teams = {
                 "nickname": "Team LeBron",
                 "urlName": "team_lebron",
                 "confName": "West",
-                "divName": "West"
+                "divName": "West",
             },
             {
                 "isNBAFranchise": "false",
@@ -582,7 +582,7 @@ json_teams = {
                 "nickname": "Africa",
                 "urlName": "africa",
                 "confName": "",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "false",
@@ -595,7 +595,7 @@ json_teams = {
                 "nickname": "World",
                 "urlName": "world",
                 "confName": "",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "false",
@@ -608,7 +608,7 @@ json_teams = {
                 "nickname": "36ers",
                 "urlName": "36ers",
                 "confName": "Intl",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -621,7 +621,7 @@ json_teams = {
                 "nickname": "Hawks",
                 "urlName": "hawks",
                 "confName": "East",
-                "divName": "Southeast"
+                "divName": "Southeast",
             },
             {
                 "isNBAFranchise": "false",
@@ -634,7 +634,7 @@ json_teams = {
                 "nickname": "Ducks",
                 "urlName": "ducks",
                 "confName": "Intl",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -647,7 +647,7 @@ json_teams = {
                 "nickname": "Celtics",
                 "urlName": "celtics",
                 "confName": "East",
-                "divName": "Atlantic"
+                "divName": "Atlantic",
             },
             {
                 "isNBAFranchise": "true",
@@ -660,7 +660,7 @@ json_teams = {
                 "nickname": "Nets",
                 "urlName": "nets",
                 "confName": "East",
-                "divName": "Atlantic"
+                "divName": "Atlantic",
             },
             {
                 "isNBAFranchise": "true",
@@ -673,7 +673,7 @@ json_teams = {
                 "nickname": "Hornets",
                 "urlName": "hornets",
                 "confName": "East",
-                "divName": "Southeast"
+                "divName": "Southeast",
             },
             {
                 "isNBAFranchise": "true",
@@ -686,7 +686,7 @@ json_teams = {
                 "nickname": "Bulls",
                 "urlName": "bulls",
                 "confName": "East",
-                "divName": "Central"
+                "divName": "Central",
             },
             {
                 "isNBAFranchise": "true",
@@ -699,7 +699,7 @@ json_teams = {
                 "nickname": "Cavaliers",
                 "urlName": "cavaliers",
                 "confName": "East",
-                "divName": "Central"
+                "divName": "Central",
             },
             {
                 "isNBAFranchise": "true",
@@ -712,7 +712,7 @@ json_teams = {
                 "nickname": "Mavericks",
                 "urlName": "mavericks",
                 "confName": "West",
-                "divName": "Southwest"
+                "divName": "Southwest",
             },
             {
                 "isNBAFranchise": "true",
@@ -725,7 +725,7 @@ json_teams = {
                 "nickname": "Nuggets",
                 "urlName": "nuggets",
                 "confName": "West",
-                "divName": "Northwest"
+                "divName": "Northwest",
             },
             {
                 "isNBAFranchise": "true",
@@ -738,7 +738,7 @@ json_teams = {
                 "nickname": "Pistons",
                 "urlName": "pistons",
                 "confName": "East",
-                "divName": "Central"
+                "divName": "Central",
             },
             {
                 "isNBAFranchise": "true",
@@ -751,7 +751,7 @@ json_teams = {
                 "nickname": "Warriors",
                 "urlName": "warriors",
                 "confName": "West",
-                "divName": "Pacific"
+                "divName": "Pacific",
             },
             {
                 "isNBAFranchise": "false",
@@ -764,7 +764,7 @@ json_teams = {
                 "nickname": "Long-Lions",
                 "urlName": "long-lions",
                 "confName": "Intl",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "false",
@@ -777,7 +777,7 @@ json_teams = {
                 "nickname": "Maccabi Haifa",
                 "urlName": "maccabi_haifa",
                 "confName": "Intl",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -790,7 +790,7 @@ json_teams = {
                 "nickname": "Rockets",
                 "urlName": "rockets",
                 "confName": "West",
-                "divName": "Southwest"
+                "divName": "Southwest",
             },
             {
                 "isNBAFranchise": "true",
@@ -803,7 +803,7 @@ json_teams = {
                 "nickname": "Pacers",
                 "urlName": "pacers",
                 "confName": "East",
-                "divName": "Central"
+                "divName": "Central",
             },
             {
                 "isNBAFranchise": "true",
@@ -816,7 +816,7 @@ json_teams = {
                 "nickname": "Clippers",
                 "urlName": "clippers",
                 "confName": "West",
-                "divName": "Pacific"
+                "divName": "Pacific",
             },
             {
                 "isNBAFranchise": "true",
@@ -829,7 +829,7 @@ json_teams = {
                 "nickname": "Lakers",
                 "urlName": "lakers",
                 "confName": "West",
-                "divName": "Pacific"
+                "divName": "Pacific",
             },
             {
                 "isNBAFranchise": "false",
@@ -842,7 +842,7 @@ json_teams = {
                 "nickname": "United",
                 "urlName": "united",
                 "confName": "Intl",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -855,7 +855,7 @@ json_teams = {
                 "nickname": "Grizzlies",
                 "urlName": "grizzlies",
                 "confName": "West",
-                "divName": "Southwest"
+                "divName": "Southwest",
             },
             {
                 "isNBAFranchise": "true",
@@ -868,7 +868,7 @@ json_teams = {
                 "nickname": "Heat",
                 "urlName": "heat",
                 "confName": "East",
-                "divName": "Southeast"
+                "divName": "Southeast",
             },
             {
                 "isNBAFranchise": "true",
@@ -881,7 +881,7 @@ json_teams = {
                 "nickname": "Bucks",
                 "urlName": "bucks",
                 "confName": "East",
-                "divName": "Central"
+                "divName": "Central",
             },
             {
                 "isNBAFranchise": "true",
@@ -894,7 +894,7 @@ json_teams = {
                 "nickname": "Timberwolves",
                 "urlName": "timberwolves",
                 "confName": "West",
-                "divName": "Northwest"
+                "divName": "Northwest",
             },
             {
                 "isNBAFranchise": "true",
@@ -907,7 +907,7 @@ json_teams = {
                 "nickname": "Pelicans",
                 "urlName": "pelicans",
                 "confName": "West",
-                "divName": "Southwest"
+                "divName": "Southwest",
             },
             {
                 "isNBAFranchise": "true",
@@ -920,7 +920,7 @@ json_teams = {
                 "nickname": "Knicks",
                 "urlName": "knicks",
                 "confName": "East",
-                "divName": "Atlantic"
+                "divName": "Atlantic",
             },
             {
                 "isNBAFranchise": "false",
@@ -933,7 +933,7 @@ json_teams = {
                 "nickname": "Breakers",
                 "urlName": "breakers",
                 "confName": "Intl",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -946,7 +946,7 @@ json_teams = {
                 "nickname": "Thunder",
                 "urlName": "thunder",
                 "confName": "West",
-                "divName": "Northwest"
+                "divName": "Northwest",
             },
             {
                 "isNBAFranchise": "true",
@@ -959,7 +959,7 @@ json_teams = {
                 "nickname": "Magic",
                 "urlName": "magic",
                 "confName": "East",
-                "divName": "Southeast"
+                "divName": "Southeast",
             },
             {
                 "isNBAFranchise": "false",
@@ -972,7 +972,7 @@ json_teams = {
                 "nickname": "Wildcats",
                 "urlName": "wildcats",
                 "confName": "Intl",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -985,7 +985,7 @@ json_teams = {
                 "nickname": "76ers",
                 "urlName": "sixers",
                 "confName": "East",
-                "divName": "Atlantic"
+                "divName": "Atlantic",
             },
             {
                 "isNBAFranchise": "true",
@@ -998,7 +998,7 @@ json_teams = {
                 "nickname": "Suns",
                 "urlName": "suns",
                 "confName": "West",
-                "divName": "Pacific"
+                "divName": "Pacific",
             },
             {
                 "isNBAFranchise": "true",
@@ -1011,7 +1011,7 @@ json_teams = {
                 "nickname": "Trail Blazers",
                 "urlName": "blazers",
                 "confName": "West",
-                "divName": "Northwest"
+                "divName": "Northwest",
             },
             {
                 "isNBAFranchise": "false",
@@ -1024,7 +1024,7 @@ json_teams = {
                 "nickname": "Flamengo",
                 "urlName": "flamengo",
                 "confName": "Intl",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1037,7 +1037,7 @@ json_teams = {
                 "nickname": "Kings",
                 "urlName": "kings",
                 "confName": "West",
-                "divName": "Pacific"
+                "divName": "Pacific",
             },
             {
                 "isNBAFranchise": "true",
@@ -1050,7 +1050,7 @@ json_teams = {
                 "nickname": "Spurs",
                 "urlName": "spurs",
                 "confName": "West",
-                "divName": "Southwest"
+                "divName": "Southwest",
             },
             {
                 "isNBAFranchise": "false",
@@ -1063,7 +1063,7 @@ json_teams = {
                 "nickname": "Shanghai Sharks",
                 "urlName": "shanghai_sharks",
                 "confName": "Intl",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "false",
@@ -1076,7 +1076,7 @@ json_teams = {
                 "nickname": "Kings",
                 "urlName": "kings",
                 "confName": "Intl",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1089,7 +1089,7 @@ json_teams = {
                 "nickname": "Raptors",
                 "urlName": "raptors",
                 "confName": "East",
-                "divName": "Atlantic"
+                "divName": "Atlantic",
             },
             {
                 "isNBAFranchise": "true",
@@ -1102,7 +1102,7 @@ json_teams = {
                 "nickname": "Jazz",
                 "urlName": "jazz",
                 "confName": "West",
-                "divName": "Northwest"
+                "divName": "Northwest",
             },
             {
                 "isNBAFranchise": "true",
@@ -1115,8 +1115,8 @@ json_teams = {
                 "nickname": "Wizards",
                 "urlName": "wizards",
                 "confName": "East",
-                "divName": "Southeast"
-            }
+                "divName": "Southeast",
+            },
         ],
         "africa": [
             {
@@ -1130,7 +1130,7 @@ json_teams = {
                 "nickname": "Africa",
                 "urlName": "africa",
                 "confName": "",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "false",
@@ -1143,8 +1143,8 @@ json_teams = {
                 "nickname": "World",
                 "urlName": "world",
                 "confName": "",
-                "divName": ""
-            }
+                "divName": "",
+            },
         ],
         "sacramento": [
             {
@@ -1158,7 +1158,7 @@ json_teams = {
                 "nickname": "Warriors",
                 "urlName": "warriors",
                 "confName": "Sacramento",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1171,7 +1171,7 @@ json_teams = {
                 "nickname": "Lakers",
                 "urlName": "lakers",
                 "confName": "Sacramento",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1184,7 +1184,7 @@ json_teams = {
                 "nickname": "Heat",
                 "urlName": "heat",
                 "confName": "Sacramento",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1197,8 +1197,8 @@ json_teams = {
                 "nickname": "Kings",
                 "urlName": "kings",
                 "confName": "Sacramento",
-                "divName": ""
-            }
+                "divName": "",
+            },
         ],
         "vegas": [
             {
@@ -1212,7 +1212,7 @@ json_teams = {
                 "nickname": "Hawks",
                 "urlName": "hawks",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1225,7 +1225,7 @@ json_teams = {
                 "nickname": "Celtics",
                 "urlName": "celtics",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1238,7 +1238,7 @@ json_teams = {
                 "nickname": "Nets",
                 "urlName": "nets",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1251,7 +1251,7 @@ json_teams = {
                 "nickname": "Hornets",
                 "urlName": "hornets",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1264,7 +1264,7 @@ json_teams = {
                 "nickname": "Bulls",
                 "urlName": "bulls",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1277,7 +1277,7 @@ json_teams = {
                 "nickname": "Cavaliers",
                 "urlName": "cavaliers",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1290,7 +1290,7 @@ json_teams = {
                 "nickname": "Mavericks",
                 "urlName": "mavericks",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1303,7 +1303,7 @@ json_teams = {
                 "nickname": "Nuggets",
                 "urlName": "nuggets",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1316,7 +1316,7 @@ json_teams = {
                 "nickname": "Pistons",
                 "urlName": "pistons",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1329,7 +1329,7 @@ json_teams = {
                 "nickname": "Warriors",
                 "urlName": "warriors",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1342,7 +1342,7 @@ json_teams = {
                 "nickname": "Rockets",
                 "urlName": "rockets",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1355,7 +1355,7 @@ json_teams = {
                 "nickname": "Pacers",
                 "urlName": "pacers",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1368,7 +1368,7 @@ json_teams = {
                 "nickname": "Clippers",
                 "urlName": "clippers",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1381,7 +1381,7 @@ json_teams = {
                 "nickname": "Lakers",
                 "urlName": "lakers",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1394,7 +1394,7 @@ json_teams = {
                 "nickname": "Grizzlies",
                 "urlName": "grizzlies",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1407,7 +1407,7 @@ json_teams = {
                 "nickname": "Heat",
                 "urlName": "heat",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1420,7 +1420,7 @@ json_teams = {
                 "nickname": "Bucks",
                 "urlName": "bucks",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1433,7 +1433,7 @@ json_teams = {
                 "nickname": "Timberwolves",
                 "urlName": "timberwolves",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1446,7 +1446,7 @@ json_teams = {
                 "nickname": "Pelicans",
                 "urlName": "pelicans",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1459,7 +1459,7 @@ json_teams = {
                 "nickname": "Knicks",
                 "urlName": "knicks",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1472,7 +1472,7 @@ json_teams = {
                 "nickname": "Thunder",
                 "urlName": "thunder",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1485,7 +1485,7 @@ json_teams = {
                 "nickname": "Magic",
                 "urlName": "magic",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1498,7 +1498,7 @@ json_teams = {
                 "nickname": "76ers",
                 "urlName": "sixers",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1511,7 +1511,7 @@ json_teams = {
                 "nickname": "Suns",
                 "urlName": "suns",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1524,7 +1524,7 @@ json_teams = {
                 "nickname": "Trail Blazers",
                 "urlName": "blazers",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1537,7 +1537,7 @@ json_teams = {
                 "nickname": "Kings",
                 "urlName": "kings",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1550,7 +1550,7 @@ json_teams = {
                 "nickname": "Spurs",
                 "urlName": "spurs",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1563,7 +1563,7 @@ json_teams = {
                 "nickname": "Raptors",
                 "urlName": "raptors",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1576,7 +1576,7 @@ json_teams = {
                 "nickname": "Jazz",
                 "urlName": "jazz",
                 "confName": "summer",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1589,8 +1589,8 @@ json_teams = {
                 "nickname": "Wizards",
                 "urlName": "wizards",
                 "confName": "summer",
-                "divName": ""
-            }
+                "divName": "",
+            },
         ],
         "utah": [
             {
@@ -1604,7 +1604,7 @@ json_teams = {
                 "nickname": "Hawks",
                 "urlName": "hawks",
                 "confName": "Utah",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1617,7 +1617,7 @@ json_teams = {
                 "nickname": "Grizzlies",
                 "urlName": "grizzlies",
                 "confName": "Utah",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1630,7 +1630,7 @@ json_teams = {
                 "nickname": "Spurs",
                 "urlName": "spurs",
                 "confName": "Utah",
-                "divName": ""
+                "divName": "",
             },
             {
                 "isNBAFranchise": "true",
@@ -1643,8 +1643,8 @@ json_teams = {
                 "nickname": "Jazz",
                 "urlName": "jazz",
                 "confName": "Utah",
-                "divName": ""
-            }
-        ]
-    }
+                "divName": "",
+            },
+        ],
+    },
 }
