@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 
 from typing import List
@@ -69,9 +69,9 @@ class ScheduleDay(NBAApi):
                         zip(json["resultSets"][1]["headers"], line_score_row)
                     )
 
-                    # If line row matches header row game id then check if there
-                    # is a match for either team on team_id and set that teams
-                    # points
+                    # If line row matches header row game_id then check if
+                    # there is a match for either team on team_id and set that
+                    # teams points
                     if game_line["GAME_ID"] == game_header["GAME_ID"]:
                         if game_line["TEAM_ID"] == game_header["HOME_TEAM_ID"]:
                             game.home_pts = game_line["PTS"]
