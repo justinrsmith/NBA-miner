@@ -1,0 +1,4 @@
+repos:
+-   repo: https://github.com/justinrsmith/nba_warehouse/
+    hooks:
+    -   id: flake8
