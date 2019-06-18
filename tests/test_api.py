@@ -2,7 +2,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from nba_warehouse.api import NBAApi
+from nba_miner.api import NBAApi
 
 
 class TestNBAApi(object):

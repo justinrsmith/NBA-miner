@@ -6,7 +6,7 @@ import pytest
 
 from constants import SKIP_REAL
 from tests.fixtures import json_games, games
-from nba_warehouse.games import Game, ScheduleDay
+from nba_miner.games import Game, ScheduleDay
 
 
 @pytest.fixture

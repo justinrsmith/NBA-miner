@@ -3,7 +3,7 @@ from datetime import datetime
 
 from typing import List
 
-from nba_warehouse.api import NBAApi
+from nba_miner.api import NBAApi
 
 
 BASE_URL = "https://stats.nba.com/stats/scoreboardV2?DayOffset=0&LeagueID=00"

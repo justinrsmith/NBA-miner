@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from nba_warehouse.games import Game
+from nba_miner.games import Game
 
 json_games = {
     "resource": "scoreboardV2",

@@ -5,8 +5,8 @@ from unittest.mock import patch, Mock
 import pytest
 
 from constants import SKIP_REAL
-from nba_warehouse.api import NBAApi
-from nba_warehouse.teams import get, Team
+from nba_miner.api import NBAApi
+from nba_miner.teams import get, Team
 from tests.fixtures import json_teams
 
 

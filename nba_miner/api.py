@@ -1,6 +1,6 @@
 import requests
 
-from nba_warehouse.utils import HEADERS
+from nba_miner.utils import HEADERS
 
 
 class NBAApi:

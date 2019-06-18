@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from nba_warehouse.api import NBAApi
+from nba_miner.api import NBAApi
 
 Team = namedtuple(
     "Team",
