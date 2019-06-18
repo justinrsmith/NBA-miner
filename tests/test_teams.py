@@ -1,4 +1,3 @@
-import json
 from unittest import skipIf
 from unittest.mock import patch, Mock
 
@@ -18,7 +17,7 @@ def mock_json_teams():
 class TestGetTeams(object):
     @classmethod
     def setup_class(self):
-        self.mock_requests_patcher = patch("nba_warehouse.api.requests.get")
+        self.mock_requests_patcher = patch("nba_miner.api.requests.get")
         self.mock_requests = self.mock_requests_patcher.start()
 
     def test_get_teams_returns_a_list(self, mock_json_teams):
@@ -168,7 +167,7 @@ class TestGetTeams(object):
 
         teams = get(nba_only=True)
 
-        assert any(not team.is_nba_franchise for team in teams) == False
+        assert any(not team.is_nba_franchise for team in teams) is False
 
     def test_when_nba_only_param_false_all_returned(self, mock_json_teams):
         """when nba_only is false all teams should be returned"""
@@ -200,7 +199,7 @@ def test_integration_contract(mock_json_teams):
     actual_keys = api.get().json()["league"]["standard"][0].keys()
 
     # Call the service to hit mocked API
-    with patch("nba_warehouse.api.requests.get") as mock_get:
+    with patch("nba_miner.api.requests.get") as mock_get:
         mock_get.return_value.ok = True
         mock_get.return_value.json.return_value = mock_json_teams
 

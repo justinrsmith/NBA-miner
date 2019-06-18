@@ -8,7 +8,7 @@ from nba_miner.api import NBAApi
 class TestNBAApi(object):
     @classmethod
     def setup_class(self):
-        self.mock_get_patcher = patch("nba_warehouse.api.requests.get")
+        self.mock_get_patcher = patch("nba_miner.api.requests.get")
         self.mock_get = self.mock_get_patcher.start()
 
         self.url = "http://someurl.com"
@@ -30,7 +30,7 @@ class TestNBAApi(object):
 
         response = self.nba_api.get()
 
-        assert self.mock_get.called == True
+        assert self.mock_get.called is True
         assert response.ok is True
 
     def test_get_data_from_nba_api_is_not_ok(self):
@@ -38,5 +38,5 @@ class TestNBAApi(object):
 
         response = self.nba_api.get()
 
-        assert self.mock_get.called == True
+        assert self.mock_get.called is True
         assert response is None

@@ -1,6 +1,6 @@
 from datetime import datetime
 from unittest import skipIf
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -27,7 +27,7 @@ def mock_game():
 class TestScheduleDay(object):
     @classmethod
     def setup_class(self):
-        self.mock_requests_patcher = patch("nba_warehouse.api.requests.get")
+        self.mock_requests_patcher = patch("nba_miner.api.requests.get")
         self.mock_requests = self.mock_requests_patcher.start()
         self.date = datetime(2018, 11, 30)
         self.schedule_day = ScheduleDay(self.date)
@@ -166,7 +166,7 @@ def test_integeration_contract(mock_json_games):
     actual_keys = schedule_day.get().json().keys()
 
     # Call the service to hit the mocked API
-    with patch("nba_warehouse.api.requests.get") as mock_get:
+    with patch("nba_miner.api.requests.get") as mock_get:
         mock_get.return_value.ok = True
         mock_get.return_value.json.return_value = mock_json_games
 
