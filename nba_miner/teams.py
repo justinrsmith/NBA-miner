@@ -30,20 +30,9 @@ def get(**kwargs):
 
     teams = []
     for team_json in teams_json["league"]["standard"]:
-
-        if team_json["isNBAFranchise"] == "true":
-            is_nba_franchise = True
-        else:
-            is_nba_franchise = False
-
-        if team_json["isAllStar"] == "true":
-            is_all_star = True
-        else:
-            is_all_star = False
-
         team = Team(
-            is_nba_franchise=is_nba_franchise,
-            is_all_star=is_all_star,
+            is_nba_franchise=team_json["isNBAFranchise"],
+            is_all_star=team_json["isAllStar"],
             city=team_json["city"],
             alt_city_name=team_json["altCityName"],
             full_name=team_json["fullName"],
@@ -54,7 +43,7 @@ def get(**kwargs):
             conf_name=team_json["confName"],
             div_name=team_json["divName"],
         )
-        if nba_only and is_nba_franchise:
+        if nba_only and team_json["isNBAFranchise"]:
             teams.append(team)
         elif not nba_only:
             teams.append(team)
