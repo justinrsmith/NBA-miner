@@ -16,6 +16,9 @@ class Game:
     season: int
     home_team_id: int
     visitor_team_id: int
+    game_status: str
+    game_code: str
+    arena: str
     home_pts: int = None
     visitor_pts: int = None
 
@@ -29,19 +32,19 @@ class Game:
 
 
 @dataclass
-class ScheduleDay(NBAApi):
+class LeagueGameDayFinder(NBAApi):
     date: datetime
+    home_team_id: int = None
+    visitor_team_id: int = None
+    team_id: int = None
     games: List[Game] = None
 
     def __post_init__(self):
         super().__init__(BASE_URL + f'&gameDate={self.date.strftime("%m/%d/%Y")}')
+        self.get_games()
 
-    def get_json(self) -> dict:
-        request = self.get()
-        return request.json()
-
-    def set_games(self) -> None:
-        json = self.get_json()
+    def get_games(self) -> None:
+        json = self.get().json()
 
         if json:
             self.games = []  # reset game attribute
@@ -50,15 +53,20 @@ class ScheduleDay(NBAApi):
             ]:  # Loop over GameHeader data rows
                 # Combine data with their keys
                 game_header = dict(zip(json["resultSets"][0]["headers"], header_row))
+
                 # Start setting up game object
                 game = Game(
-                    str(game_header["GAME_ID"]),
-                    datetime.strptime(
+                    id=str(game_header["GAME_ID"]),
+                    date=datetime.strptime(
                         game_header["GAME_DATE_EST"], "%Y-%m-%dT%H:%M:%S"
                     ),
-                    int(game_header["SEASON"]),
-                    game_header["HOME_TEAM_ID"],
-                    game_header["VISITOR_TEAM_ID"],
+                    season=game_header["SEASON"],
+                    home_team_id=game_header["HOME_TEAM_ID"],
+                    visitor_team_id=game_header["VISITOR_TEAM_ID"],
+                    game_status=game_header["GAME_STATUS_TEXT"],
+                    game_code=game_header["GAMECODE"],
+                    arena=game_header["ARENA_NAME"],
+                    # home_fg_pct=game_header[""]
                 )
 
                 for line_score_row in json["resultSets"][1][
@@ -77,4 +85,22 @@ class ScheduleDay(NBAApi):
                             game.home_pts = game_line["PTS"]
                         elif game_line["TEAM_ID"] == game_header["VISITOR_TEAM_ID"]:
                             game.visitor_pts = game_line["PTS"]
-                self.games.append(game)
+
+                if self.home_team_id and self.home_team_id == game.home_team_id:
+                    self.games.append(game)
+                elif (
+                    self.visitor_team_id
+                    and self.visitor_team_id == game.visitor_team_id
+                ):
+                    self.games.append(game)
+                elif self.team_id and (
+                    self.team_id == game.home_team_id
+                    or self.team_id == game.visitor_team_id
+                ):
+                    self.games.append(game)
+                elif (
+                    not self.home_team_id
+                    and not self.visitor_team_id
+                    and not self.team_id
+                ):
+                    self.games.append(game)
